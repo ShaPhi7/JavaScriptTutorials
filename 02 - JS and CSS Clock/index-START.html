@@ -10,16 +10,16 @@
 
     <div class="clock">
       <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
         <div class="hand second-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand hour-hand"></div>
       </div>
     </div>
 
 
   <style>
     html {
-      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+      background: #021d30;
       background-size: cover;
       font-family: 'helvetica neue';
       text-align: center;
@@ -63,13 +63,54 @@
       background: black;
       position: absolute;
       top: 50%;
+      left: 50%;
+      transform-origin: 0%;
+      transition: all 0.5s;
+      transition-timing-function: ease-in-out;
+    }
+
+    .hour-hand {
+      background: white;
+      width: 30%;
+    }
+
+    .min-hand {
+      background: blue;
+      width: 40%;
+    }
+
+    .second-hand {
+      background: red;
+      width: 50%;
     }
 
   </style>
 
   <script>
 
+    function setDate() {
+      const now = new Date();
 
+      const seconds = now.getSeconds();
+      const secondsDegrees = seconds * 6 + 270;
+      const secondHand = document.querySelector('.second-hand');
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+      const minutes = now.getMinutes();
+      const minuteDegrees = minutes * 6 + 270;
+      const minuteHand = document.querySelector('.min-hand');
+      minuteHand.style.transform = `rotate(${minuteDegrees}deg)`;
+
+      const hours = now.getHours();
+      const hoursDegrees = hours * 30 + 270;
+      const hourHand = document.querySelector('.hour-hand');
+      hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+
+    }
+
+    setInterval(setDate, 1000);
+    
+    setDate();
   </script>
 </body>
 </html>
