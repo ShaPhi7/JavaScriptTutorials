@@ -17,12 +17,21 @@
 
     <label for="base">Base Color</label>
     <input id="base" type="color" name="base" value="#ffc600">
+
+    <label for="rotate">Rotation:</label>
+    <input id="rotate" type="range" name="rotate" min="0" max="360" value="0" data-sizing="deg">
   </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+  <img class="image" src="https://unsplash.it/1500/1000?image=781">
 
   <style>
 
+    :root {
+      --base: #ffc5ff;
+      --spacing: 10px;
+      --blur: 0px;
+      --rotate: 0deg;
+    }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -43,9 +52,28 @@
     input {
       width: 100px;
     }
+
+    .image {
+      height: 500px;
+      transform: var(--rotate);
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
   </style>
 
   <script>
+    const inputs = document.querySelectorAll('.controls input');
+    
+    function handleUpdate() {
+      const value = this.value;
+      const dataSizing = this.dataset.sizing || '';
+      const valueToSet = value + dataSizing;
+      document.documentElement.style.setProperty(`--${this.name}`, valueToSet);
+      document.documentElement.style.setProperty(this.name, valueToSet);
+    }
+
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
   </script>
 
 </body>
