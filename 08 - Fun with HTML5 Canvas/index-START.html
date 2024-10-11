@@ -8,6 +8,46 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+
+  const canvas = document.querySelector('#draw');
+
+  const context = canvas.getContext('2d');
+  let hue = 0;
+  let direction = 0;
+  
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
+  context.lineWidth = '1';
+
+  
+  let isDrawing = false;
+
+  canvas.addEventListener('mousemove', onMove);
+  canvas.addEventListener('mousedown', () => isDrawing = true);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+  function onMove(e) { 
+    if (!isDrawing) return;
+
+    context.beginPath()
+    context.lineTo(e.offsetX, e.offsetY);
+    context.stroke();
+
+    hue++;
+    context.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+    if (context.lineWidth >= 100 || context.lineWidth <= 1) {
+      direction = !direction;
+    }
+
+    if(direction) {
+      context.lineWidth++;
+    } else {
+      context.lineWidth--;
+    }
+  }
+
 </script>
 
 <style>
