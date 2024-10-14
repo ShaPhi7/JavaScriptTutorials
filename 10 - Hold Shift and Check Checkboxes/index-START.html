@@ -25,6 +25,7 @@
       display: flex;
       align-items: center;
       border-bottom: 1px solid #F1F1F1;
+      background-color: #F9F9F9;
     }
 
     .item:last-child {
@@ -32,12 +33,12 @@
     }
 
     input:checked + p {
-      background: #F9F9F9;
       text-decoration: line-through;
     }
 
     input[type="checkbox"] {
       margin: 20px;
+      
     }
 
     p {
@@ -59,69 +60,90 @@
   -->
   <div class="inbox">
     <div class="item">
-      <input type="checkbox", id="box1", value="value1">
+      <input type="checkbox">
       <p>This is an inbox layout.</p>
     </div>
     <div class="item">
-      <input type="checkbox", id="box2", value="value2">
+      <input type="checkbox">
       <p>Check one item</p>
     </div>
     <div class="item">
-      <input type="checkbox", id="box3", value="value3">
+      <input type="checkbox">
       <p>Hold down your Shift key</p>
     </div>
     <div class="item">
-      <input type="checkbox", id="box4", value="value4">
+      <input type="checkbox">
       <p>Check a lower item</p>
     </div>
     <div class="item">
-      <input type="checkbox", id="box5", value="value5">
+      <input type="checkbox">
       <p>Everything in between should also be set to checked</p>
     </div>
     <div class="item">
-      <input type="checkbox", id="box6", value="value6">
+      <input type="checkbox">
       <p>Try to do it without any libraries</p>
     </div>
     <div class="item">
-      <input type="checkbox", id="box7", value="value7">
+      <input type="checkbox">
       <p>Just regular JavaScript</p>
     </div>
     <div class="item">
-      <input type="checkbox", id="box8", value="value8">
+      <input type="checkbox">
       <p>Good Luck!</p>
     </div>
     <div class="item">
-      <input type="checkbox", id="box9", value="value9">
+      <input type="checkbox">
       <p>Don't forget to tweet your result!</p>
     </div>
   </div>
 
 <script>
 
-  let lastClickedIndex = -1;
-
+  let indexOfBaseItem = -1;
   let shiftPressed = false;
   
   window.addEventListener('keydown', toggleShiftPressed);
   
   const items = Array.from(document.querySelectorAll('input[type="checkbox"]'));
   items.forEach(item => item.addEventListener('click', onSelection));
+  items.forEach(item => item.parentElement.addEventListener('mousemove', onHover));
   console.log(items);
 
-  function onSelection() {
-    if (shiftPressed && lastClickedIndex > -1) {
-      this.checked = true;
-      const indexOf = items.indexOf(this);
-      items.forEach(element => {
-        const indexOfThisElement = items.indexOf(element);
-        if (lastClickedIndex <= indexOfThisElement && indexOfThisElement <= indexOf) {
-          element.checked = true;
-        }
-      });
-      console.log(indexOf);
+  function onHover() {
+    if (shiftPressed && indexOfBaseItem > -1) {
+      const checkbox = this.querySelector('input[type="checkbox"]');
+      const indexOfThisItem = items.indexOf(checkbox);
+      
+      const itemsInScope = getItemsInScope(items, indexOfBaseItem, indexOfThisItem);
+
+      itemsInScope.forEach(item => item.parentElement.style.backgroundColor = '#AAAAFF');
+
+      const itemsOutOfScope = items.filter(item => !itemsInScope.includes(item));
+      itemsOutOfScope.forEach(item => item.parentElement.style.backgroundColor = '#F9F9F9');
       
     }
-    lastClickedIndex = items.indexOf(this);
+  }
+
+  function onSelection() {
+    if (shiftPressed && indexOfBaseItem > -1) {
+      this.checked = true;
+      const indexOfSecondItem = items.indexOf(this);
+
+      const itemsInScope = getItemsInScope(items, indexOfBaseItem, indexOfSecondItem);
+
+      const valueToUpdate = !itemsInScope.every(item => item.checked);
+      itemsInScope.forEach(item => item.checked = valueToUpdate);
+    }
+
+    if (indexOfBaseItem == -1 || !shiftPressed) indexOfBaseItem = items.indexOf(this);
+  }
+
+  function getItemsInScope(items, indexOfBaseItem, indexOfSecondItem) {
+    return items.filter(element => {
+        const indexOfThisElement = items.indexOf(element);
+        return (indexOfBaseItem <= indexOfThisElement && indexOfThisElement <= indexOfSecondItem)
+          || (indexOfSecondItem <= indexOfThisElement && indexOfThisElement <= indexOfBaseItem)
+      })
   }
 
   function toggleShiftPressed(e) {
@@ -130,11 +152,13 @@
     if (e.type == 'keyup') {
       window.addEventListener('keydown', toggleShiftPressed);
       shiftPressed = false;
+      indexOfBaseItem = -1; //if shift released, then reset
+      items.forEach(item => item.parentElement.style.backgroundColor = '#F9F9F9');
       console.log('keyUp');
     }
     else if (e.type == 'keydown')
     {
-      window.removeEventListener('keydown', toggleShiftPressed);
+      window.removeEventListener('keydown', toggleShiftPressed); //experiementing with stopping the event firing too much
       window.addEventListener('keyup', toggleShiftPressed);
       shiftPressed = true;
       console.log('keyDown');
