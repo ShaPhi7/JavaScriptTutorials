@@ -7,6 +7,13 @@
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
   <body>
-    <script></script>
+    <script>
+      const pressed = []
+      window.addEventListener('keydown', (e) => {
+        pressed.push(e.key);
+        pressed.splice(-6, pressed.length - 6);
+        if (pressed.join('').includes('1')) cornify_add();
+      })
+    </script>
   </body>
 </html>
