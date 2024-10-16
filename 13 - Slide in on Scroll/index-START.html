@@ -44,6 +44,30 @@
   </div>
 
   <script>
+
+    const images = document.querySelectorAll('.slide-in');
+
+    window.addEventListener('scroll', debounce(checkSlide));
+
+    function checkSlide(e) {
+      images.forEach(image => {
+        const bottomOfScreen = window.scrollY + window.innerHeight;
+        const slideInAt = bottomOfScreen - image.height / 2; //halfway
+        const imageBottom = image.offsetTop + image.height
+
+        const isHalfShown = slideInAt > image.offsetTop;
+        const isScrolledPast = window.scrollY >= imageBottom;
+
+        if (isHalfShown && !isScrolledPast) {
+          console.log("here");
+          image.classList.add('active');
+        }
+        else {
+          image.classList.remove('active');
+        }
+      });
+    }
+    
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
