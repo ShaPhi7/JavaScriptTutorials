@@ -9,31 +9,58 @@
 
   <script>
     // start with strings, numbers and booleans
+    let age = 100
+    let age2 = age;
+    console.log(age, age2); //100 100
+    age = 200;
+    console.log(age, age2); //200 100 
+
+    let name = 'Alice'
+    let name2 = name;
+
+    console.log(name, name2); //Alice, Alice
+    name = 'Bob'
+    console.log(name, name2); //Bob, Alice
 
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
 
     // and we want to make a copy of it.
-
     // You might think we can just do something like this:
+
+    let team = players;
+    team[3] = 'Alice';
 
     // however what happens when we update that array?
 
+    console.log(team); //3 - Alice
+    console.log(players); //3 - Alice (unlike above)
+
     // now here is the problem!
-
     // oh no - we have edited the original array too!
-
     // Why? It's because that is an array reference, not an array copy. They both point to the same array!
 
     // So, how do we fix this? We take a copy instead!
-
+    const newTeam = players.slice();
+    newTeam[3] = 'Bob';
     // one way
+    console.log(newTeam); //3 - Bob
+    console.log(players); //3 - Alice
 
     // or create a new array and concat the old one in
-
-    // or use the new ES6 Spread
+    let newArray = [].concat(players);
+    let newWay = [...players]; // or use the new ES6 Spread
+    let fromWay = Array.from(players);
 
     // now when we update it, the original one isn't changed
+
+    newArray[3] = 'Charlie';
+    newWay[3] = 'Dave';
+    fromWay[3] = 'Eve';
+    console.log(newArray); // Charlie
+    console.log(newWay); // Dave
+    console.log(fromWay); // Eve
+    console.log(players); // Alice
 
     // The same thing goes for objects, let's say we have a person object
 
@@ -44,10 +71,21 @@
     };
 
     // and think we make a copy:
+    const captain = person;
+    captain.age = 99;
+    console.log(person.age); //99
+    console.log(captain.age); //99
 
     // how do we take a copy instead?
+    let newPerson = Object.assign({}, person, {age: 100});
+    console.log(person.age); //99
+    console.log(newPerson.age); //100
 
     // We will hopefully soon see the object ...spread
+    const extra = {...person}; //well that runs so it exists now
+    extra.age = 1;
+    console.log(extra.age); //1
+    console.log(person.age); //99
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
 
