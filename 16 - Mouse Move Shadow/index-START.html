@@ -30,12 +30,39 @@
   }
 
   h1 {
-    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    text-shadow: 10px 10px 0 rgba(0,0,0,0.5);
     font-size: 100px;
   }
   </style>
 
 <script>
+
+  window.addEventListener('mousemove', onMove);
+
+  function onMove(e) {
+    
+    const mousePosition = {
+      x: e.clientX,
+      y: e.clientY
+    }
+
+    const windowCentre = {
+      x: window.innerHeight / 2,
+      y: window.innerWidth / 2
+    }
+
+    const shadowPosition = {
+      x: (mousePosition.x - windowCentre.x) / 2,
+      y: (mousePosition.y - windowCentre.y) / 2
+    }
+
+    const h1 = document.querySelector('h1');
+    h1.style.textShadow = `${shadowPosition.x}px ${shadowPosition.y}px 0 rgba(0,0,0,0.5),
+                           ${shadowPosition.x}px ${-shadowPosition.y}px 0 rgba(255,0,0,0.5),
+                           ${-shadowPosition.x}px ${shadowPosition.y}px 0 rgba(0,255,0,0.5),
+                           ${-shadowPosition.x}px ${-shadowPosition.y}px 0 rgba(0,0,255,0.5)`
+    
+  }
 </script>
 </body>
 </html>
