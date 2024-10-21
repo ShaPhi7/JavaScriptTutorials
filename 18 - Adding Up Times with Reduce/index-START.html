@@ -183,6 +183,23 @@
     </li>
   </ul>
 <script>
+
+  const videosList = document.querySelectorAll('[data-time]');
+  const videos = Array.from(videosList);
+
+  const totalTimeSeconds = videos.reduce((total, item) => {
+        const time = item.dataset.time;
+        const [mins, secs] = time.split(':').map(parseFloat);
+        totalSecondsOfVideo = mins * 60 + secs;
+        return total + totalSecondsOfVideo
+      }, 0);
+
+        const hours = Math.floor(totalTimeSeconds / 3600);
+        const secondsLeft = totalTimeSeconds % 3600;
+        const mins = Math.floor(secondsLeft / 60);
+        const secs = secondsLeft % 60;
+        
+        console.log(hours, mins, secs);
 </script>
 </body>
 </html>
