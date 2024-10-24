@@ -9,33 +9,61 @@
 <body>
 
   <div class="photobooth">
-    <div class="controls">
+    <div class="strip"></div>
+    <div class="controls" style="background-color: beige;">
       <button onClick="takePhoto()">Take Photo</button>
-<!--       <div class="rgb">
-        <label for="rmin">Red Min:</label>
-        <input type="range" min=0 max=255 name="rmin">
-        <label for="rmax">Red Max:</label>
-        <input type="range" min=0 max=255 name="rmax">
-
-        <br>
-
-        <label for="gmin">Green Min:</label>
-        <input type="range" min=0 max=255 name="gmin">
-        <label for="gmax">Green Max:</label>
-        <input type="range" min=0 max=255 name="gmax">
-
-        <br>
-
-        <label for="bmin">Blue Min:</label>
-        <input type="range" min=0 max=255 name="bmin">
-        <label for="bmax">Blue Max:</label>
-        <input type="range" min=0 max=255 name="bmax">
-      </div> -->
+      <button onClick="reset()">Reset</button>
+       <div class="rgb" style="background-color: bisque">
+        <div class="hues">
+          <label for="red">Red Hue:</label>
+          <input type="range" min=-500 max=500 name="red" value = 0>
+          <label for="green">Green Hue:</label>
+          <input type="range" min=-500 max=500 name="green" value = 0>
+          <label for="blue">Blue Hue:</label>
+          <input type="range" min=-500 max=500 name="blue" value = 0>
+        </div>
+        <div class = "Split">
+          <label for="rsplit">Red Split:</label>
+          <input type="range" min=0 max=400 name="rsplit" step = 4 value = 0>
+          <label for="gsplit">Green Split:</label>
+          <input type="range" min=0 max=400 name="gsplit" step = 4 value = 0>
+          <label for="bsplit">Blue Split:</label>
+          <input type="range" min=0 max=400 name="bsplit" step = 4 value = 0>
+        </div>
+        <div class="Misc">
+          <label for="antiblur">Blur Effect:</label>
+          <input type="range" min=0 max=0.9 name="antiblur" step = 0.1 value = 0>
+          <label for="swirl">Swirl Effect:</label>
+          <input type="range" min=0 max=0.1 name="swirl" step="0.005" value = 0>
+          <br><b>Mirror:</b>
+          <label for="vmirror">Veritcal:</label>
+          <input type="checkbox" name="vmirror">
+          <label for="hmirror">Horizontal:</label>
+          <input type="checkbox" name="hmirror">
+        </div>
+        <div class="gScreen" style="background-color: lemonchiffon;">
+          <b>Green Screen Effect:</b>
+          <br>
+          <label for="rmin">Red Min:</label>
+          <input type="range" min=0 max=255 name="rmin" value = 0>
+          <label for="rmax">Red Max:</label>
+          <input type="range" min=0 max=255 name="rmax" value = 0>
+          <br>
+          <label for="gmin">Green Min:</label>
+          <input type="range" min=0 max=255 name="gmin" value = 0>
+          <label for="gmax">Green Max:</label>
+          <input type="range" min=0 max=255 name="gmax" value = 0>
+          <br>
+          <label for="bmin">Blue Min:</label>
+          <input type="range" min=0 max=255 name="bmin" value = 0>
+          <label for="bmax">Blue Max:</label>
+          <input type="range" min=0 max=255 name="bmax" value = 0>
+        </div>
+      </div>
     </div>
 
     <canvas class="photo"></canvas>
-    <video class="player"></video>
-    <div class="strip"></div>
+    <video class="player" hidden></video>
   </div>
 
   <audio class="snap" src="./snap.mp3" hidden></audio>
