@@ -13,6 +13,39 @@
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  let startNewParagraph = true;
+
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true;
+
+  recognition.addEventListener('result', printSpeech);
+  recognition.addEventListener('end', recognition.start);
+
+  recognition.start();
+
+  function printSpeech(e) {
+    const newWordsToAdd = Array.from(e.results)
+                              .map(result => result[0])
+                              .map(result => result.transcript)
+                              .join('');
+    
+    const words = document.querySelector('.words');
+
+    if (startNewParagraph) {
+      console.log("new")
+      let newParagraph = document.createElement('p'); //<p></p>
+      newParagraph.textContent = newWordsToAdd;
+      words.appendChild(newParagraph);
+    }
+    else
+    {
+      console.log("current");
+      let currentParagraph = words.lastElementChild;
+      currentParagraph.textContent = newWordsToAdd;
+    }
+
+    startNewParagraph = e.results[0].isFinal ? true : false;
+  }
 
 </script>
 
