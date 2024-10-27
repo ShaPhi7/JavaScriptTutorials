@@ -14,6 +14,15 @@
     <span class="speed-value">0</span>
     <span class="units">KM/H</span>
   </h1>
+  
+  <h1 class="lat">
+    <span class="latitude">0</span>
+  </h1>
+
+  <h1 class="lon">
+    <span class="longitude">0</span>
+  </h1>
+  
 
   <style>
     html {
@@ -60,6 +69,23 @@
     /*Compass: https://thenounproject.com/search/?q=compass&i=592352*/
   </style>
   <script>
+    const arrow = document.querySelector('.arrow');
+    const kph = document.querySelector('.speed-value');
+    const lat = document.querySelector('.latitude');
+    const lon = document.querySelector('.longitude');
+
+    kph.textContent = 0;
+
+    navigator.geolocation.watchPosition(data => {
+      arrow.style.transform = `rotate(${data.coords.heading}deg`;
+      if (data.coords.speed) {
+        kph.textContent = data.coords.speed;
+      }
+      lat.textContent = "Latitude: " + data.coords.latitude;
+      lon.textContent = "Longitude: " + data.coords.longitude;
+
+    });
+
   </script>
 </body>
 </html>
