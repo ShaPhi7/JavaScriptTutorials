@@ -43,7 +43,16 @@
 
 <button></button>
 <script>
+  const divs = document.querySelectorAll('div');
 
+  function logText(e) {
+    console.log(this.classList.value);
+    //e.StopPropagation(); //works with capture true & false
+  }
+
+  //divs.forEach(div => div.addEventListener('click', logText)); //bubble/propagate up
+  //divs.forEach(div => div.addEventListener('click', logText, {capture: true})); //capture down
+  divs.forEach(div => div.addEventListener('click', logText, {once: true})); //Still propagates unbinds/removes the event listener!
 </script>
 </body>
 </html>
