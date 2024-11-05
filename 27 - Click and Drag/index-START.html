@@ -36,6 +36,41 @@
   </div>
 
 <script>
+    var itemsDiv = document.querySelector('.items');
+    itemsDiv.addEventListener('mousedown', mouseDown);
+    itemsDiv.addEventListener('mouseleave', mouseLeave);
+    itemsDiv.addEventListener('mouseup', mouseUp);
+    itemsDiv.addEventListener('mousemove', mouseMove);
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    function mouseDown(e) {
+      isDown = true;
+      itemsDiv.classList.add('active');
+      startX = e.pageX - itemsDiv.offsetLeft;
+      scrollLeft = itemsDiv.scrollLeft;
+    }
+
+    function mouseLeave() {
+      isDown = false;
+      itemsDiv.classList.remove('active');
+    }
+
+    function mouseUp() {
+      isDown = false;
+      itemsDiv.classList.remove('active');
+    }
+
+    function mouseMove(e) {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - itemsDiv.offsetLeft;
+      const walk = (x - startX) * 5;
+      itemsDiv.scrollLeft = scrollLeft - walk;
+    }
+
 </script>
 
   </body>
