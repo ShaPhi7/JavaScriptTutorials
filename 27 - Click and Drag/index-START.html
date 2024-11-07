@@ -7,6 +7,7 @@
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
 <body>
+  <button>+</button>
   <div class="items">
     <div class="item item1">01</div>
     <div class="item item2">02</div>
@@ -35,6 +36,8 @@
     <div class="item item25">25</div>
   </div>
 
+  <script type="text/javascript" src="./cornify.js"></script>
+
 <script>
     var itemsDiv = document.querySelector('.items');
     itemsDiv.addEventListener('mousedown', mouseDown);
@@ -42,33 +45,71 @@
     itemsDiv.addEventListener('mouseup', mouseUp);
     itemsDiv.addEventListener('mousemove', mouseMove);
 
-    let isDown = false;
+    var button = document.querySelector('button');
+    button.addEventListener('click', createDragAndDropObject);
+
+    let scrollSelected = false;
     let startX;
     let scrollLeft;
 
     function mouseDown(e) {
-      isDown = true;
+      scrollSelected = true;
       itemsDiv.classList.add('active');
       startX = e.pageX - itemsDiv.offsetLeft;
       scrollLeft = itemsDiv.scrollLeft;
     }
 
     function mouseLeave() {
-      isDown = false;
+      scrollSelected = false;
       itemsDiv.classList.remove('active');
     }
 
     function mouseUp() {
-      isDown = false;
+      scrollSelected = false;
       itemsDiv.classList.remove('active');
     }
 
     function mouseMove(e) {
-      if (!isDown) return;
+      if (!scrollSelected) return;
       e.preventDefault();
       const x = e.pageX - itemsDiv.offsetLeft;
       const walk = (x - startX) * 5;
       itemsDiv.scrollLeft = scrollLeft - walk;
+    }
+
+    function createDragAndDropObject() {
+      const div = cornify_add();
+      div.onclick = null;
+      div.addEventListener('mousedown', selectImage);
+      div.addEventListener('mouseup', dropImage);
+      div.addEventListener('mouseleave', dropImage);
+      div.addEventListener('mousemove', moveImage);
+    }
+
+    let imageSelected = false;
+    let zIndexCount = 10000;
+
+    function selectImage(e) {
+      e.preventDefault();
+      imageSelected = true;
+      this.style.zIndex = zIndexCount;
+      zIndexCount++;
+    }
+
+    function dropImage(e) {
+      e.preventDefault();
+      imageSelected = false;
+    }
+
+    function moveImage(e) {
+      if (imageSelected == false) return ;
+      const mousePosition = {
+        x: e.clientX,
+        y: e.clientY
+      }
+
+      this.style.left = `${e.clientX}px`
+      this.style.top = `${e.clientY}px`
     }
 
 </script>
